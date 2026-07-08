@@ -50,7 +50,7 @@ jobs:
           EOF
 
           cat > aicg/.env.example << 'EOF'
-          GITHUB_TOKEN=
+          G_TOKEN=
           SESSION_SECRET=
           EOF
 
