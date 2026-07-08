@@ -1,0 +1,60 @@
+name: Build AI Context Gateway GitHub Engine
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build GitHub Engine
+        shell: bash
+        run: |
+
+          cat > aicg/github.js << 'EOF'
+          const { Octokit } = require("@octokit/rest");
+
+          const octokit = new Octokit({
+            auth: process.env.G_TOKEN
+          });
+
+          const OWNER = process.env.REPOSITORY_OWNER || "codywoods8899";
+          const REPO = process.env.REPOSITORY_NAME || "mevrelbank";
+
+          async function getRepository() {
+            return await octokit.repos.get({
+              owner: OWNER,
+              repo: REPO
+            });
+          }
+
+          async function getTree() {
+            const branch = await octokit.repos.getBranch({
+              owner: OWNER,
+              repo: REPO,
+              branch: "main"
+            });
+
+            return await octokit.git.getTree({
+              owner: OWNER,
+              repo: REPO,
+              tree_sha: branch.data.commit.sha,
+              recursive: "true"
+            });
+          }
+
+          async function readFile(path) {
+
+            const response = await octokit.repos.getContent({
+              owner: OWNER,
+              repo: REPO,
+              path
+            });
+
+            if (!response
