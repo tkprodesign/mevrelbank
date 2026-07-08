@@ -4,28 +4,43 @@ This repository contains two projects:
 
 ## 1. AICG — AI Context Gateway (`aicg/`)
 
-A Node.js/Express server (v0.1.0) that acts as a gateway for AI context operations, integrating with GitHub via Octokit.
+A secure, read-only Node.js/Express intelligence gateway that gives an authorized AI session autonomous access to a GitHub repository (search, read files, navigate folders, inspect the tree). It never modifies the repository.
 
 ### Stack
 - Node.js 20 / Express 5
 - `@octokit/rest` for GitHub API access
-- `bcrypt` for password hashing
-- `uuid` for session IDs
-- `dotenv` for environment config
+- `bcrypt`, `uuid`, `dotenv`
 
-### Required Secrets
-- `GITHUB_TOKEN` — GitHub personal access token
-- `SESSION_SECRET` — Session signing secret *(already set in Replit Secrets)*
+### Required Secrets (Replit Secrets)
+| Secret | Purpose |
+|---|---|
+| `G_TOKEN` | GitHub personal access token (read-only scope) |
+| `SESSION_SECRET` | Authorization credential — present this to `POST /authorize` |
 
 ### Run
-```bash
-cd aicg && npm install && npm start
-```
-Starts on port `3000` (or `$PORT`).
+Workflow: **Start application** → `cd aicg && node server.js` (port 3000)
+
+### Session Flow
+1. `POST /authorize` with `{ "token": "<SESSION_SECRET>" }` → returns `{ "sessionId": "..." }`
+2. All subsequent requests include header `X-Session-ID: <sessionId>`
+3. `POST /invalidate` to terminate the session
+
+Only **one** active session exists at any time. A new `/authorize` call invalidates the previous session.
 
 ### Endpoints
-- `GET /` — Service info
-- `GET /health` — Health check
+| Method | Route | Auth | Description |
+|---|---|---|---|
+| GET | `/` | — | Service identity |
+| GET | `/health` | — | Liveness probe |
+| POST | `/authorize` | token | Exchange token for session ID |
+| POST | `/invalidate` | session | Terminate active session |
+| GET | `/tree` | session | Full repository tree (blocked paths stripped) |
+| GET | `/folder?path=<path>` | session | List folder contents |
+| GET | `/file?path=<path>` | session | Read and decode a file |
+| GET | `/search?q=<query>&mode=<filename\|code\|both>` | session | Search repository |
+
+### Blocked Paths
+`.github/`, `.env*`, `secrets/` — always returns 403 regardless of session.
 
 ---
 
