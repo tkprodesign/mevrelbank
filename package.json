@@ -1,0 +1,16 @@
+{
+  "name": "mevrelbank-dropbox-sync",
+  "version": "1.0.0",
+  "description": "GitHub → Dropbox Smart Sync System",
+  "private": true,
+  "scripts": {
+    "sync": "node .github/scripts/dropbox-sync.js"
+  },
+  "dependencies": {
+    "dropbox": "^10.34.0",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
