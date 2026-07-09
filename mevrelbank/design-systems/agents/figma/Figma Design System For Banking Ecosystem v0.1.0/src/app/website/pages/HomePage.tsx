@@ -4,6 +4,7 @@ import { TrustBar }   from "../components/TrustBar";
 import { Features }   from "../components/Features";
 import { AppPreview } from "../components/AppPreview";
 import { CoreSections } from "../components/CoreSections";
+import { BusinessModel } from "../components/BusinessModel";
 import { CTA }        from "../components/CTA";
 import { Footer }     from "../components/Footer";
 
@@ -17,6 +18,7 @@ export default function HomePage() {
         <Features />
         <AppPreview />
         <CoreSections />
+        <BusinessModel />
         <CTA />
       </main>
       <Footer />
