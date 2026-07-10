@@ -1,0 +1,287 @@
+# Agent Session Log — MevrelBank
+
+> **Purpose:** A precise, continuously updated record of every agent session on this repository. Each entry documents the session date, the GitHub PR it produced, every file touched, exact line-count deltas, and a clear statement of what changed and why.
+>
+> **Update protocol:** This file must be updated at the end of every agent session. New entries are appended at the top (most-recent first). The pre-session baseline state is recorded once at the bottom.
+
+---
+
+## Session Index
+
+| Session | Date (UTC) | PR | Title |
+|---------|------------|----|-------|
+| [S-07](#s-07) | 2026-07-10 | — | Create this session log |
+| [S-06](#s-06) | 2026-07-09 | [#6](https://github.com/codywoods8899/mevrelbank/pull/6) | Business model + next-steps homepage section |
+| [S-05](#s-05) | 2026-07-09 | [#5](https://github.com/codywoods8899/mevrelbank/pull/5) | Phase 1 inner pages (7 routes) |
+| [S-04](#s-04) | 2026-07-09 | [#4](https://github.com/codywoods8899/mevrelbank/pull/4) | Homepage integrity pass |
+| [S-03](#s-03) | 2026-07-08 | [#3](https://github.com/codywoods8899/mevrelbank/pull/3) | React Router + dist build |
+| [S-02](#s-02) | 2026-07-08 | [#2](https://github.com/codywoods8899/mevrelbank/pull/2) | Fix package-lock.json |
+| [S-01](#s-01) | 2026-07-08 | [#1](https://github.com/codywoods8899/mevrelbank/pull/1) | Dropbox sync system |
+
+---
+
+<a id="s-07"></a>
+## S-07 · 2026-07-10 · This session log
+
+**Branch:** `copilot/create-session-log`  
+**PR:** (current)  
+**Trigger:** User request — create a scientifically precise, retroactively complete agent session log and commit it to the repository.
+
+### Objective
+Create `docs/session-log.md` as a living document that records every agent session with file-level precision. Reconstruct all six prior sessions from the GitHub PR and commit history since no log existed before.
+
+### Method
+1. Retrieved all 6 merged PRs via GitHub MCP (`list_pull_requests`).
+2. Retrieved file-level diffs for each PR via `get_files` on each pull request number.
+3. Retrieved git log and PR descriptions for timing and context.
+4. Cross-referenced with stored agent memories and `mevrelbank/roadmap.md`.
+
+### Files Changed
+| File | Status | +Lines | −Lines |
+|------|--------|--------|--------|
+| `docs/session-log.md` | added | ~250 | 0 |
+
+### Outcome
+Session log created. All prior sessions S-01 through S-06 reconstructed from PR history.
+
+---
+
+<a id="s-06"></a>
+## S-06 · 2026-07-09T05:05–05:08Z · Business model + next-steps homepage section
+
+**Branch:** `copilot/next-steps-website-business-model`  
+**PR:** [#6](https://github.com/codywoods8899/mevrelbank/pull/6) — merged 2026-07-09T05:08:33Z  
+**Trigger:** User request to add a business model and website next-steps section to the homepage.
+
+### Objective
+Make the homepage's purpose explicit: not just brand communication but demand validation and strategic signalling. Show visitors how MevrelBank plans to grow (three revenue pillars) and what the website should do next (three prioritised next steps).
+
+### Files Changed (source)
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `src/app/website/components/BusinessModel.tsx` | added | 103 | 0 | New section component |
+| `src/app/website/pages/HomePage.tsx` | modified | 2 | 0 | Import + mount `<BusinessModel />` |
+
+### Files Changed (dist rebuild)
+| File | Status | +Lines | −Lines |
+|------|--------|--------|--------|
+| `dist/assets/index-CFGzHcFD.js` | added | 330 | 0 |
+| `dist/assets/index-Dk3UZPRj.css` | added | 1 | 0 |
+| `dist/assets/index-6jcR4itQ.js` | removed | 0 | 329 |
+| `dist/assets/index-CHKjUH9-.css` | removed | 0 | 1 |
+| `dist/index.html` | modified | 2 | 2 |
+
+### Component Detail: `BusinessModel.tsx`
+- `REVENUE_PILLARS` array (3 items): Personal banking, Business banking, Expansion services — each with a title and explanatory paragraph.
+- `NEXT_STEPS` array (3 items, step 01–03): Convert interest → waitlist, Publish product + pricing detail, Strengthen trust pages.
+- Section layout: `bg-[#F4F7FB]` section, 3-column pillar grid (white cards), 3-column dark-navy next-steps grid.
+- Accessible: `aria-labelledby="business-model-heading"`, `<article>` elements per card, semantic heading hierarchy (h2 → h3 → h4).
+
+### Outcome
+Homepage now contains 9 distinct sections (Navbar, Hero, TrustBar, Features, AppPreview, CoreSections [×5 subsections], BusinessModel, CTA, Footer). The site functions as both a brand page and a strategy/demand-validation surface.
+
+---
+
+<a id="s-05"></a>
+## S-05 · 2026-07-09T04:52–04:53Z · Phase 1 inner pages (7 routes)
+
+**Branch:** `copilot/database-hosting-query`  
+**PR:** [#5](https://github.com/codywoods8899/mevrelbank/pull/5) — merged 2026-07-09T04:53:01Z  
+**Trigger:** User request to add all planned Phase 1 inner pages so the live site has real destinations beyond the homepage.
+
+### Objective
+Add routed, first-class inner pages for About, Products, Contact, FAQs, Security Center, Careers, and Blog. Standardise inner-page structure via a shared shell component. Update navigation to point to page routes rather than homepage fragment anchors.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `src/app/website/components/PageShell.tsx` | added | 110 | 0 | Reusable inner-page layout: hero, Navbar, Footer, section spacing |
+| `src/app/website/pages/AboutPage.tsx` | added | 102 | 0 | Mission, vision, values, leadership focus |
+| `src/app/website/pages/BlogPage.tsx` | added | 43 | 0 | Placeholder editorial route |
+| `src/app/website/pages/CareersPage.tsx` | added | 57 | 0 | Hiring posture + career interest mailto CTA |
+| `src/app/website/pages/ContactPage.tsx` | added | 115 | 0 | Enquiry form (mailto payload) + support channels |
+| `src/app/website/pages/FaqsPage.tsx` | added | 43 | 0 | Accordion-style FAQ answers |
+| `src/app/website/pages/ProductsPage.tsx` | added | 97 | 0 | Core product categories with `#personal` / `#business` anchors |
+| `src/app/website/pages/SecurityPage.tsx` | added | 68 | 0 | Security posture + responsible disclosure guidance |
+| `src/app/website/pages/index.tsx` | added | 7 | 0 | Barrel export for all page components |
+| `src/main.tsx` | modified | 17 | 4 | 7 new routes added to `createBrowserRouter` |
+| `src/app/website/components/Footer.tsx` | modified | 16 | 22 | Links updated from `#fragment` anchors to `/page` routes |
+| `src/app/website/components/Navbar.tsx` | modified | 9 | 14 | Links updated from `#fragment` anchors to `/page` routes |
+
+**Total net lines added (source):** +684
+
+### Route table after this session
+| Path | Component |
+|------|-----------|
+| `/` | `HomePage` |
+| `/about` | `AboutPage` |
+| `/products` | `ProductsPage` |
+| `/contact` | `ContactPage` |
+| `/faqs` | `FaqsPage` |
+| `/security-center` | `SecurityPage` |
+| `/careers` | `CareersPage` |
+| `/blog` | `BlogPage` |
+| `/ds` | Design system demo (`App`) |
+
+### Outcome
+All Phase 1 public-site destinations are live. Navigation (Navbar + Footer) points to stable page routes. Deep-links such as `/products#personal` and `/products#business` preserved via section anchors inside `ProductsPage`.
+
+---
+
+<a id="s-04"></a>
+## S-04 · 2026-07-09T03:47–03:48Z · Homepage integrity pass
+
+**Branch:** `copilot/mevrelbank-hosting-strategy`  
+**PR:** [#4](https://github.com/codywoods8899/mevrelbank/pull/4) — merged 2026-07-09T03:48:27Z  
+**Trigger:** User request to fix homepage integrity: broken nav/footer anchors, unverifiable regulatory claims, and placeholder conversion endpoints.
+
+### Objective
+Close the gap between the visually complete homepage and its actual behaviour: nav links resolving to missing anchors, hero/trust-bar making unverifiable regulatory/awards claims, and CTAs looping back to `#` placeholders.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `src/app/website/components/CoreSections.tsx` | added | 158 | 0 | New: Personal, Business, About, Careers, Support sections with real IDs |
+| `src/app/website/components/Footer.tsx` | modified | 31 | 12 | Links wired to real anchors; legal copy rewritten to dev-stage language |
+| `src/app/website/components/Hero.tsx` | modified | 6 | 6 | Removed `£18B+ AUM`, `99.99% uptime`, `4.9★` (unverifiable); replaced with neutral copy; CTA `href` → `mailto:` |
+| `src/app/website/components/Navbar.tsx` | modified | 4 | 4 | "Log in" → `/ds`; "Open Account" → `mailto:` |
+| `src/app/website/components/CTA.tsx` | modified | 6 | 5 | CTA → `mailto:hello@mevrelbank.com`; secondary → `#business`; footer legal line updated |
+| `src/app/website/components/TrustBar.tsx` | modified | 5 | 5 | Replaced FSCS/FCA/ISO/Which? with neutral security-posture messaging |
+| `src/app/website/pages/HomePage.tsx` | modified | 2 | 0 | Import + mount `<CoreSections />` |
+
+**Total net lines added (source):** +189
+
+### CoreSections detail
+Five inline sections with stable `id` attributes for nav anchors: `#personal`, `#business`, `#about`, `#careers`, `#support`. Support section has three deep-link targets: `#support-contact`, `#support-security`, `#support-status`.
+
+### Compliance rationale
+All unverifiable figures and regulatory assertions were removed. Hero regulatory badge changed to `"Security-first product design"`. TrustBar replaced with factual product-posture labels. Footer legal block rewritten to reflect development-stage status. This aligns with the project's pre-launch state and avoids misleading potential customers about regulatory authorisations not yet obtained.
+
+### Outcome
+All primary navigation paths resolve to real content. Conversion endpoints use `mailto:` addresses. No unverifiable regulatory or performance claims remain on the live page.
+
+---
+
+<a id="s-03"></a>
+## S-03 · 2026-07-08T19:43–19:48Z · React Router + dist build
+
+**Branch:** `copilot/understand-project-vision`  
+**PR:** [#3](https://github.com/codywoods8899/mevrelbank/pull/3) — merged 2026-07-08T19:48:29Z  
+**Trigger:** User request to extract the homepage from the design system demo shell into a real, routable public website.
+
+### Objective
+The public website existed only as a tab inside the design system demo (`App.tsx`). This session added React Router v7, exposed `/` as the homepage, preserved `/ds` as the design system demo, wired brand PNGs into `public/brand/`, and produced a deployable `dist/` build.
+
+### Context
+The Figma-imported design system (committed before PR #1) already contained all website component source files: `Navbar.tsx`, `Hero.tsx`, `TrustBar.tsx`, `Features.tsx`, `AppPreview.tsx`, `CTA.tsx`, `Footer.tsx`, `shared/Logo.tsx`, `shared/Btn.tsx`. This session did not create those components; it wired them into a routed application.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `index.html` | modified | 10 | 12 | Title updated; favicon wired to brand PNG; root div preserved |
+| `dist/index.html` | added | 21 | 0 | Built entry point |
+| `dist/assets/index-6jcR4itQ.js` | added | 329 | 0 | Vite bundle |
+| `dist/assets/index-CHKjUH9-.css` | added | 1 | 0 | Vite CSS bundle (minified) |
+| `dist/brand/mevrelbank-horizontal-logo-v1.png` | added | — | — | Binary |
+| `dist/brand/mevrelbank-primary-logo-v1.png` | added | — | — | Binary |
+| `dist/brand/mevrelbank-reverse-logo-v1.png` | added | — | — | Binary |
+| `dist/brand/mevrelbank-symbol-favicon-v1.png` | added | — | — | Binary |
+| `dist/brand/mevrelbank-symbol-logo-v1.png` | added | — | — | Binary |
+
+> **Note:** `src/main.tsx` was updated to use `RouterProvider` (React Router v7), but this change pre-dated or was part of the base commit and does not appear in the PR diff delta. The PR description confirms routing was the core deliverable.
+
+### Outcome
+`/` → `HomePage`, `/ds` → design system demo. Brand PNGs served from `public/brand/`. Site deployable to Cloudflare Pages from the `dist/` folder. Live site subsequently confirmed reachable at `mevrelbank.com`.
+
+---
+
+<a id="s-02"></a>
+## S-02 · 2026-07-08T19:34–19:48Z · Fix package-lock.json
+
+**Branch:** `copilot/fix-sync-repository-to-dropbox`  
+**PR:** [#2](https://github.com/codywoods8899/mevrelbank/pull/2) — merged 2026-07-08T19:48:42Z  
+**Trigger:** CI failure — the Dropbox Sync Actions workflow (introduced in S-01) was failing at `npm ci` because `package-lock.json` was absent.
+
+### Root cause
+`actions/setup-node@v4` with `cache: npm` and `npm ci` both require a lock file. S-01 committed `package.json` but not `package-lock.json`.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `package-lock.json` | added | 457 | 0 | Locks 34 packages; 0 known vulnerabilities at time of generation |
+| `.gitignore` | added | 1 | 0 | Excludes `node_modules/` |
+
+### Dependency snapshot (root)
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `dropbox` | `^10.34.0` | Dropbox SDK |
+| `node-fetch` | `^3.3.2` | HTTP client for sync scripts |
+
+### Outcome
+Workflow unblocked. `npm ci` succeeds in CI. `node_modules/` excluded from version control.
+
+---
+
+<a id="s-01"></a>
+## S-01 · 2026-07-08T19:19–19:31Z · Dropbox sync system
+
+**Branch:** `copilot/build-dropbox-sync-system`  
+**PR:** [#1](https://github.com/codywoods8899/mevrelbank/pull/1) — merged 2026-07-08T19:31:55Z  
+**Trigger:** User request to create a GitHub Actions workflow that synchronises the repository to Dropbox.
+
+### Objective
+Build a complete, production-grade Dropbox sync system as a GitHub Actions workflow. The system must: scan the repo for changed files, upload them to Dropbox, archive orphan Dropbox files (never delete), compare remote vs local state, and produce structured logs.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `.github/workflows/dropbox-sync.yml` | added | 41 | 0 | Actions workflow definition |
+| `.github/scripts/dropbox-sync.js` | modified | 131 | 1 | Main orchestrator |
+| `.github/scripts/dropbox.js` | modified | 194 | 2 | Dropbox API client wrapper |
+| `.github/scripts/compare.js` | modified | 143 | 2 | Local vs remote state comparison |
+| `.github/scripts/archive.js` | modified | 78 | 2 | Orphan archival logic (never deletes) |
+| `.github/scripts/upload.js` | modified | 70 | 2 | File upload handler |
+| `.github/scripts/config.js` | modified | 59 | 2 | Shared configuration |
+| `.github/scripts/utils.js` | added | 125 | 0 | `utcTimestamp`, `stampedFilename`, shared utilities |
+| `.github/scripts/logger.js` | added | 93 | 0 | Structured logger |
+| `.github/scripts/scanner.js` | added | 88 | 0 | Repo file scanner |
+| `package.json` | added | 16 | 0 | Node.js project manifest |
+| `README-dropbox-sync.md` | added | 106 | 0 | Operator documentation |
+| `docs/architecture.md` | added | 81 | 0 | System architecture reference |
+| `docs/archive-system.md` | added | 65 | 0 | Archive subsystem documentation |
+| `docs/configuration.md` | added | 69 | 0 | Configuration reference |
+| `docs/workflow.md` | added | 85 | 0 | Workflow process documentation |
+
+**Total net lines added:** ~1,246
+
+### Architecture summary
+- **Trigger:** `push` to `main` (via `dropbox-sync.yml`)
+- **Runner:** `ubuntu-latest`, Node.js 20
+- **Secrets required:** `DROPBOX_ACCESS_TOKEN` (Dropbox API), `DROPBOX_TARGET_FOLDER` (destination path)
+- **Flow:** `scanner.js` → `compare.js` → `upload.js` + `archive.js` → `logger.js`
+- **Archival:** Orphan files moved to a timestamped archive folder; never permanently deleted
+
+### Outcome
+Fully functional Dropbox sync workflow. Note: workflow was blocked in CI until S-02 added the missing `package-lock.json`.
+
+---
+
+## Pre-Session Baseline State
+
+**Established before PR #1 (2026-07-08)**
+
+The repository was initialised with:
+
+| Asset | Location | Description |
+|-------|----------|-------------|
+| Brand logo system | `mevrelbank/brand/` | PNG logos: horizontal, primary, reverse, symbol, favicon |
+| Figma Design System v0.1.0 | `mevrelbank/design-systems/agents/figma/Figma Design System For Banking Ecosystem v0.1.0/` | Full Vite + React + Tailwind CSS v4 app including all website component source files |
+| Roadmap | `mevrelbank/roadmap.md` | Phase 0–11 plan with milestones and decisions log |
+| AICG gateway | `aicg/` | Node.js/Express read-only GitHub intelligence gateway |
+| Replit config | `.replit`, `replit.md` | Replit workspace configuration |
+| GitHub Actions stubs | `.github/scripts/*.js` | Stub scripts for Dropbox sync (pre-implementation) |
+
+**Website components pre-existing in the Figma app:**
+`Navbar.tsx`, `Hero.tsx`, `TrustBar.tsx`, `Features.tsx`, `AppPreview.tsx`, `CTA.tsx`, `Footer.tsx`, `shared/Logo.tsx`, `shared/Btn.tsx`, `pages/HomePage.tsx`, `App.tsx` (design system demo shell)
+
+These were imported from Figma and committed as part of the initial design system import, before any agent sessions began.
