@@ -37,7 +37,7 @@ export function Navbar() {
           <Btn variant="ghost" size="sm" href="/contact">
             Contact
           </Btn>
-          <Btn variant="primary" size="sm" href="mailto:hello@mevrelbank.com?subject=Open%20account%20interest">
+          <Btn variant="primary" size="sm" href="/waitlist">
             Open Account
           </Btn>
         </div>
@@ -70,7 +70,7 @@ export function Navbar() {
             <Btn variant="outline" size="md" href="/contact" className="w-full justify-center">
               Contact
             </Btn>
-            <Btn variant="primary" size="md" href="mailto:hello@mevrelbank.com?subject=Open%20account%20interest" className="w-full justify-center">
+            <Btn variant="primary" size="md" href="/waitlist" className="w-full justify-center">
               Open Account
             </Btn>
           </div>

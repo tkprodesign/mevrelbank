@@ -10,6 +10,7 @@ import {
   FaqsPage,
   ProductsPage,
   SecurityPage,
+  WaitlistPage,
 } from "./app/website/pages";
 import "./styles/index.css";
 
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
   { path: "/security-center", element: <SecurityPage /> },
   { path: "/careers", element: <CareersPage /> },
   { path: "/blog", element: <BlogPage /> },
+  { path: "/waitlist", element: <WaitlistPage /> },
   { path: "/ds", element: <App /> },
   { path: "*", element: <HomePage /> },
 ]);

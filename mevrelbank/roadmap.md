@@ -45,13 +45,16 @@ Build MevrelBank into a secure, modern, scalable digital banking ecosystem that 
 - [x] Brand PNG logos in use (from `brand/logo/web/`)
 - [x] Favicon wired up
 - [x] React Router: `/` → homepage, `/ds` → design system demo
-- [ ] About page
-- [ ] Products & Services page
-- [ ] Contact page
-- [ ] FAQs page
-- [ ] Careers page
-- [ ] Blog / News
-- [ ] Security Center
+- [x] About page
+- [x] Products & Services page
+- [x] Contact page
+- [x] FAQs page
+- [x] Careers page
+- [x] Blog / News
+- [x] Security Center
+- [ ] Waitlist / lead capture page (`/waitlist`)
+- [ ] Per-route SEO (`<title>` + `<meta description>`)
+- [ ] Mobile nav (hamburger drawer already added; full verification needed)
 
 ---
 

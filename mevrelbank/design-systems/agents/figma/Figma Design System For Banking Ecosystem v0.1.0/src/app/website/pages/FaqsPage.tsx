@@ -1,4 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion";
+import { PageMeta } from "../components/PageMeta";
 import { PageSection, PageShell } from "../components/PageShell";
 
 const FAQS = [
@@ -12,7 +13,12 @@ const FAQS = [
 
 export default function FaqsPage() {
   return (
-    <PageShell
+    <>
+      <PageMeta
+        title="FAQs — MevrelBank"
+        description="Answers to the most common questions about MevrelBank: account types, security, business banking, launch timeline, and how to register interest."
+      />
+      <PageShell
       eyebrow="FAQs"
       title="Answers to the questions visitors are most likely to ask first."
       intro="This page is designed to give clear, direct context about the current stage of the project, what is planned, and how to reach the team."
@@ -39,5 +45,6 @@ export default function FaqsPage() {
         </div>
       </PageSection>
     </PageShell>
+    </>
   );
 }

@@ -5,3 +5,4 @@ export { default as FaqsPage } from "./FaqsPage";
 export { default as SecurityPage } from "./SecurityPage";
 export { default as CareersPage } from "./CareersPage";
 export { default as BlogPage } from "./BlogPage";
+export { default as WaitlistPage } from "./WaitlistPage";
