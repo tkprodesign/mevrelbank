@@ -18,22 +18,41 @@ export default function WaitlistPage() {
   const [accountType, setAccountType] = useState<AccountType>("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!name.trim() || !email.trim() || !accountType) return;
+    if (!name.trim() || !email.trim() || !accountType || isSubmitting) return;
 
-    const subject = `Waitlist interest — ${accountType === "personal" ? "Personal" : "Business"} account`;
-    const body = [
-      `Name: ${name.trim()}`,
-      `Email: ${email.trim()}`,
-      `Account type: ${accountType === "personal" ? "Personal" : "Business"}`,
-      "",
-      message.trim() ? `Message:\n${message.trim()}` : "No additional message.",
-    ].join("\n");
+    setSubmitError("");
+    setIsSubmitting(true);
 
-    window.location.href = `mailto:hello@mevrelbank.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSubmitted(true);
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          accountType,
+          message: message.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(data?.error || "Unable to register your interest right now. Please try again.");
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Unable to register your interest right now. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,11 +79,7 @@ export default function WaitlistPage() {
                   <h2 className="text-[22px] font-semibold text-[#0D1829]">Interest registered</h2>
                 </div>
                 <p className="text-[16px] leading-relaxed text-[#5E6E8E] max-w-lg">
-                  Your email client should have opened with your details pre-filled. If it did not open automatically,{" "}
-                  <a href="mailto:hello@mevrelbank.com" className="text-[#0B3270] hover:text-[#0E3E8C] transition-colors underline underline-offset-2">
-                    email us directly
-                  </a>
-                  .
+                  Thank you. Your details were received by the MevrelBank team and we will follow up as launch readiness progresses.
                 </p>
                 <Btn variant="outline" href="/" size="md">Return to homepage</Btn>
               </div>
@@ -150,11 +165,14 @@ export default function WaitlistPage() {
                   />
                 </label>
 
-                <Btn type="submit" size="lg" disabled={!name.trim() || !email.trim() || !accountType}>
-                  Register interest
+                <Btn type="submit" size="lg" disabled={!name.trim() || !email.trim() || !accountType || isSubmitting}>
+                  {isSubmitting ? "Submitting..." : "Register interest"}
                 </Btn>
+                {submitError ? (
+                  <p className="text-[12px] text-[#C52B2B]">{submitError}</p>
+                ) : null}
                 <p className="text-[12px] text-[#9AAABF]">
-                  Submitting opens your email client with your details pre-filled for confirmation.
+                  Your details are submitted securely to the MevrelBank team.
                 </p>
               </form>
             )}
