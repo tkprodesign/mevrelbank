@@ -10,6 +10,8 @@
 
 | Session | Date (UTC) | PR | Title | Agent |
 |---------|------------|----|-------|-------|
+| [S-12](#s-12) | 2026-07-10T03:47Z | — | Fix sync engine divergent target pushes | Copilot Coding Agent |
+| [S-11](#s-11) | 2026-07-10T03:30Z | — | GitHub Sync Engine v1 | Copilot Coding Agent |
 | [S-10](#s-10) | 2026-07-10T01:52Z | — | Cloudflare D1 waitlist backend | Copilot Coding Agent |
 | [S-09](#s-09) | 2026-07-10T01:40Z | — | Phase 2 auth pages scaffold | Copilot Coding Agent |
 | [S-08](#s-08) | 2026-07-10T01:24Z | — | Phase 1 close-out: waitlist, SEO, roadmap | Copilot Coding Agent |
@@ -22,6 +24,50 @@
 | [S-01](#s-01) | 2026-07-08T19:19Z | [#1](https://github.com/codywoods8899/mevrelbank/pull/1) | Dropbox sync system | Copilot Coding Agent |
 
 ---
+
+<a id="s-12"></a>
+## S-12 · 2026-07-10T03:47Z · Fix sync engine divergent target pushes
+
+**Agent:** Copilot Coding Agent
+**Branch:** `work`
+**PR:** (current)
+**Trigger:** User reported GitHub Sync Engine push failure: target `main` rejected the update with `fetch first` because the target branch contained commits not present locally.
+
+### Objective
+Update GitHub Sync Engine v1 so repository mirror drift is handled safely. Preserve branch-only synchronization while avoiding blind force pushes by using a lease against the target SHA observed earlier in the run.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `.github/workflows/sync-engine.yml` | modified | ~10 | 0 | Divergent existing target branches now push with `--force-with-lease=refs/heads/<branch>:<observed-target-sha>` |
+| `docs/github-sync-engine.md` | modified | ~5 | ~4 | Documented lease-protected divergent updates and revised push rejection troubleshooting |
+| `docs/session-log.md` | modified | ~24 | 0 | Recorded the follow-up fix session |
+
+### Outcome
+The sync engine can now update a target branch that has drifted from the source branch, while still failing safely if the target branch changes after the workflow's SHA comparison step.
+
+<a id="s-11"></a>
+## S-11 · 2026-07-10T03:30Z · GitHub Sync Engine v1
+
+**Agent:** Copilot Coding Agent
+**Branch:** `work`
+**PR:** (current)
+**Trigger:** User request to add production-quality GitHub Sync Engine v1 infrastructure for syncing this repository to `codywoods8899/mevrelbank`.
+
+### Objective
+Create reusable synchronization infrastructure that reads target settings from configuration, compares branch HEAD SHAs, pushes only the current branch when needed, and prevents sync loops with actor, marker, and SHA guards. Do not modify application code.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `.github/sync-config.json` | added | 5 | 0 | Target owner, repo, and default branch configuration for the sync engine |
+| `.github/workflows/sync-engine.yml` | added | 190 | 0 | Production GitHub Actions sync engine with full-history checkout, target clone, SHA comparison, branch-only push, strict bash, and logging |
+| `.github/workflows/sync-to-cody.yml` | removed | 0 | 32 | Removed old simple push workflow to avoid duplicate synchronization paths |
+| `docs/github-sync-engine.md` | added | 120 | 0 | Architecture, loop prevention, configuration, secrets, disablement, logging, and troubleshooting docs |
+| `docs/session-log.md` | modified | ~24 | 0 | Recorded this infrastructure session per repository agent documentation rules |
+
+### Outcome
+GitHub Sync Engine v1 is ready for use once `SYNC_PAT` is configured. The old one-off sync workflow was removed so synchronization is handled by the reusable engine only.
 
 <a id="s-10"></a>
 ## S-10 · 2026-07-10T01:52Z · Cloudflare D1 waitlist backend
