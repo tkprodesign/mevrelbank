@@ -1,3 +1,4 @@
+import { PageMeta } from "../components/PageMeta";
 import { PageSection, PageShell } from "../components/PageShell";
 
 const VALUES = [
@@ -32,7 +33,12 @@ const LEADERSHIP = [
 
 export default function AboutPage() {
   return (
-    <PageShell
+    <>
+      <PageMeta
+        title="About MevrelBank — Mission, Vision & Values"
+        description="Learn about MevrelBank, the digital banking platform built around trust, speed, and clarity. Discover our mission, values, and team focus areas."
+      />
+      <PageShell
       eyebrow="About MevrelBank"
       title="A modern banking brand built around trust, speed, and clarity."
       intro="MevrelBank is being shaped as a digital banking experience for people and businesses who expect premium design, straightforward products, and a dependable financial home."
@@ -98,5 +104,6 @@ export default function AboutPage() {
         </div>
       </PageSection>
     </PageShell>
+    </>
   );
 }

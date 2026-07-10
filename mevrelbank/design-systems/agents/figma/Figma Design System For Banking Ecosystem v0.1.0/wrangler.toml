@@ -1,0 +1,7 @@
+name = "mevrelbank-site"
+compatibility_date = "2026-07-10"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mevrelbank-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"

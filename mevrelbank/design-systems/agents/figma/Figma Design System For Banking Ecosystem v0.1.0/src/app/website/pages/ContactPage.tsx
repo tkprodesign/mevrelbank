@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PageMeta } from "../components/PageMeta";
 import { PageSection, PageShell } from "../components/PageShell";
 import { Btn } from "../shared/Btn";
 
@@ -30,7 +31,12 @@ export default function ContactPage() {
   };
 
   return (
-    <PageShell
+    <>
+      <PageMeta
+        title="Contact MevrelBank — Get in Touch"
+        description="Reach out to the MevrelBank team for product enquiries, support, partnerships, or press contacts. Multiple contact channels available."
+      />
+      <PageShell
       eyebrow="Contact"
       title="Get in touch with the team behind MevrelBank."
       intro="Whether you are interested in product updates, partnerships, support pathways, or launch readiness, use the page below to reach the right contact channel."
@@ -111,5 +117,6 @@ export default function ContactPage() {
         </div>
       </PageSection>
     </PageShell>
+    </>
   );
 }

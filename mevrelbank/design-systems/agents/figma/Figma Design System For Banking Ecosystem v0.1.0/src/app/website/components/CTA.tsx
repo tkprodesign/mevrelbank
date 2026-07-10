@@ -28,10 +28,10 @@ export function CTA() {
           steps.
         </p>
         <div className="flex items-center justify-center gap-3 flex-wrap">
-          <Btn variant="secondary" size="lg" href="mailto:hello@mevrelbank.com?subject=Open%20account%20interest">
+          <Btn variant="secondary" size="lg" href="/waitlist">
             Open a Free Account
           </Btn>
-          <Btn variant="outline" size="lg" href="#business" className="border-[rgba(255,255,255,0.25)] text-white hover:bg-[rgba(255,255,255,0.08)] hover:border-[rgba(255,255,255,0.50)]">
+          <Btn variant="outline" size="lg" href="/products#business" className="border-[rgba(255,255,255,0.25)] text-white hover:bg-[rgba(255,255,255,0.08)] hover:border-[rgba(255,255,255,0.50)]">
             Explore Business Accounts
           </Btn>
         </div>

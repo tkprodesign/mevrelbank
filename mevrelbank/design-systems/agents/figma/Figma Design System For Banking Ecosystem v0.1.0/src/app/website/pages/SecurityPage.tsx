@@ -1,3 +1,4 @@
+import { PageMeta } from "../components/PageMeta";
 import { PageSection, PageShell } from "../components/PageShell";
 
 const PRACTICES = [
@@ -9,7 +10,12 @@ const PRACTICES = [
 
 export default function SecurityPage() {
   return (
-    <PageShell
+    <>
+      <PageMeta
+        title="Security Center — MevrelBank"
+        description="MevrelBank is designed with a security-first posture. Learn about our security practices, responsible disclosure process, and how to report a concern."
+      />
+      <PageShell
       eyebrow="Security Center"
       title="Security and trust are part of the product foundation."
       intro="MevrelBank is being designed with a security-first posture so the product can scale on reliable operational practices, not reactive fixes."
@@ -64,5 +70,6 @@ export default function SecurityPage() {
         </div>
       </PageSection>
     </PageShell>
+    </>
   );
 }

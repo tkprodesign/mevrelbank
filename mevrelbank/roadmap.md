@@ -32,7 +32,7 @@ Build MevrelBank into a secure, modern, scalable digital banking ecosystem that 
 
 ## Phase 1 — Public Website
 
-### In Progress
+### Completed
 
 - [x] Homepage scaffolded as standalone React app with routing
 - [x] Navbar — responsive, accessible, sticky
@@ -45,24 +45,35 @@ Build MevrelBank into a secure, modern, scalable digital banking ecosystem that 
 - [x] Brand PNG logos in use (from `brand/logo/web/`)
 - [x] Favicon wired up
 - [x] React Router: `/` → homepage, `/ds` → design system demo
-- [ ] About page
-- [ ] Products & Services page
-- [ ] Contact page
-- [ ] FAQs page
-- [ ] Careers page
-- [ ] Blog / News
-- [ ] Security Center
+- [x] About page
+- [x] Products & Services page
+- [x] Contact page
+- [x] FAQs page
+- [x] Careers page
+- [x] Blog / News
+- [x] Security Center
+- [x] Waitlist / lead capture page (`/waitlist`)
+- [x] Per-route SEO (`<title>` + `<meta description>`)
+- [x] Mobile nav (hamburger drawer)
 
 ---
 
 ## Phase 2 — Authentication
 
-- Login
-- Registration
-- Email Verification
-- OTP
-- Password Reset
-- Multi-Factor Authentication
+### In Progress
+
+- [x] Auth page shell (`AuthShell`) — centered card layout, logo bar, minimal footer
+- [x] Login page (`/login`) — email + password, show/hide toggle, error state, forgot/register links
+- [x] Registration page (`/register`) — name, email, password strength, account type, T&C acceptance
+- [x] Email Verification page (`/verify-email`) — 6-digit OTP grid, paste support, resend countdown
+- [x] Forgot Password page (`/forgot-password`) — email input, success/inbox state
+- [x] Reset Password page (`/reset-password`) — new password form, strength indicator, success state
+- [x] MFA page (`/mfa`) — TOTP input, SMS fallback toggle, resend countdown
+- [ ] Backend auth API (Railway / Node.js)
+- [ ] JWT strategy (short-lived access token + refresh token)
+- [ ] Email service integration (verification + reset emails)
+- [ ] MFA TOTP provisioning (QR code setup flow)
+- [ ] Protected route wrapper (redirect unauthenticated users)
 
 ---
 
@@ -165,7 +176,7 @@ Build MevrelBank into a secure, modern, scalable digital banking ecosystem that 
 | Brand Identity Started | ✅ |
 | Logo System Completed | ✅ |
 | Design System | ✅ |
-| Public Website (homepage) | ⏳ |
+| Public Website (homepage) | ✅ |
 | Customer Banking | ⬜ |
 | Production Launch | ⬜ |
 
@@ -182,7 +193,8 @@ Backend
 - Railway
 
 Database
-- Neon PostgreSQL
+- Cloudflare D1 (SQLite at the edge via Pages Functions — active, `waitlist_submissions`)
+- Neon PostgreSQL (planned for Phase 2+ backend — auth, customer data)
 
 Storage
 - Cloudflare R2

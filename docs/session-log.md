@@ -8,15 +8,150 @@
 
 ## Session Index
 
-| Session | Date (UTC) | PR | Title |
-|---------|------------|----|-------|
-| [S-07](#s-07) | 2026-07-10 | — | Create this session log |
-| [S-06](#s-06) | 2026-07-09 | [#6](https://github.com/codywoods8899/mevrelbank/pull/6) | Business model + next-steps homepage section |
-| [S-05](#s-05) | 2026-07-09 | [#5](https://github.com/codywoods8899/mevrelbank/pull/5) | Phase 1 inner pages (7 routes) |
-| [S-04](#s-04) | 2026-07-09 | [#4](https://github.com/codywoods8899/mevrelbank/pull/4) | Homepage integrity pass |
-| [S-03](#s-03) | 2026-07-08 | [#3](https://github.com/codywoods8899/mevrelbank/pull/3) | React Router + dist build |
-| [S-02](#s-02) | 2026-07-08 | [#2](https://github.com/codywoods8899/mevrelbank/pull/2) | Fix package-lock.json |
-| [S-01](#s-01) | 2026-07-08 | [#1](https://github.com/codywoods8899/mevrelbank/pull/1) | Dropbox sync system |
+| Session | Date (UTC) | PR | Title | Agent |
+|---------|------------|----|-------|-------|
+| [S-10](#s-10) | 2026-07-10T01:52Z | — | Cloudflare D1 waitlist backend | Copilot Coding Agent |
+| [S-09](#s-09) | 2026-07-10T01:40Z | — | Phase 2 auth pages scaffold | Copilot Coding Agent |
+| [S-08](#s-08) | 2026-07-10T01:24Z | — | Phase 1 close-out: waitlist, SEO, roadmap | Copilot Coding Agent |
+| [S-07](#s-07) | 2026-07-10T00:46Z | — | Create this session log | Copilot Coding Agent |
+| [S-06](#s-06) | 2026-07-09T05:05Z | [#6](https://github.com/codywoods8899/mevrelbank/pull/6) | Business model + next-steps homepage section | Copilot Coding Agent |
+| [S-05](#s-05) | 2026-07-09T04:50Z | [#5](https://github.com/codywoods8899/mevrelbank/pull/5) | Phase 1 inner pages (7 routes) | Copilot Coding Agent |
+| [S-04](#s-04) | 2026-07-09T03:45Z | [#4](https://github.com/codywoods8899/mevrelbank/pull/4) | Homepage integrity pass | Copilot Coding Agent |
+| [S-03](#s-03) | 2026-07-08T19:42Z | [#3](https://github.com/codywoods8899/mevrelbank/pull/3) | React Router + dist build | Copilot Coding Agent |
+| [S-02](#s-02) | 2026-07-08T19:35Z | [#2](https://github.com/codywoods8899/mevrelbank/pull/2) | Fix package-lock.json | Copilot Coding Agent |
+| [S-01](#s-01) | 2026-07-08T19:19Z | [#1](https://github.com/codywoods8899/mevrelbank/pull/1) | Dropbox sync system | Copilot Coding Agent |
+
+---
+
+<a id="s-10"></a>
+## S-10 · 2026-07-10T01:52Z · Cloudflare D1 waitlist backend
+
+**Agent:** Copilot Coding Agent  
+**Branch:** `copilot/fix-1-let-us-use-cloudflare-d1` (current session branch)  
+**PR:** (current)  
+**Trigger:** User request to use Cloudflare D1 as the site database, starting with the waitlist form.
+
+### Objective
+Replace the `mailto:` waitlist submission with a real database-backed endpoint using Cloudflare D1 and Cloudflare Pages Functions. No separate Workers project — Pages Functions handle the API layer natively via a `functions/` directory.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `wrangler.toml` | added | 8 | 0 | Cloudflare Pages project name + D1 binding (`DB` → `mevrelbank-db`) |
+| `migrations/0001_waitlist.sql` | added | 12 | 0 | Creates `waitlist_submissions` table + `created_at` index |
+| `functions/api/waitlist.ts` | added | 104 | 0 | `POST /api/waitlist` — validates input, inserts to D1; CORS + `OPTIONS` handler |
+| `src/app/website/pages/WaitlistPage.tsx` | modified | +24 | −15 | Replaced `mailto:` logic with `fetch("/api/waitlist")`; added loading + error states |
+| `README.md` | modified | +40 | 0 | Added Cloudflare D1 setup, migration, and binding instructions |
+
+### API contract
+- `POST /api/waitlist` accepts JSON `{ name, email, accountType, message? }`
+- Validates all required fields server-side; length-limits name (120), email (254), message (2000)
+- Inserts into `waitlist_submissions` (D1 SQLite)
+- CORS allowed for: `mevrelbank.com`, `www.mevrelbank.com`, `localhost:5173`, and any `*.pages.dev` preview URL
+
+### Outcome
+Waitlist submissions are now stored in Cloudflare D1. The `mailto:` fallback has been removed. Inline error and loading states added to the form. The `wrangler.toml` `database_id` placeholder must be replaced with the real ID after running `wrangler d1 create mevrelbank-db`.
+
+---
+
+<a id="s-09"></a>
+## S-09 · 2026-07-10T01:40Z · Phase 2 auth pages scaffold
+
+**Agent:** Copilot Coding Agent  
+**Branch:** (part of Phase 2 auth work, committed directly to current branch at `b112c5a`)  
+**Trigger:** User request to scaffold all Phase 2 authentication pages.
+
+### Objective
+Build all six authentication page routes using a shared `AuthShell` layout component — a centered card layout without the full Navbar/Footer, suitable for login/register flows.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `src/app/website/components/AuthShell.tsx` | added | 116 | 0 | Shared auth layout: logo bar, centered card, minimal footer |
+| `src/app/website/pages/LoginPage.tsx` | added | 119 | 0 | Email + password, show/hide toggle, error state, forgot/register links |
+| `src/app/website/pages/RegisterPage.tsx` | added | 274 | 0 | Name, email, password strength, account type, T&C acceptance |
+| `src/app/website/pages/VerifyEmailPage.tsx` | added | 206 | 0 | 6-digit OTP input grid, paste support, resend countdown |
+| `src/app/website/pages/ForgotPasswordPage.tsx` | added | 111 | 0 | Email input, success/inbox state |
+| `src/app/website/pages/ResetPasswordPage.tsx` | added | 160 | 0 | New password form, strength indicator, success state |
+| `src/app/website/pages/MFAPage.tsx` | added | 205 | 0 | TOTP input, SMS fallback toggle, resend countdown |
+| `src/app/website/pages/index.tsx` | modified | 7 | 0 | Barrel export updated with all auth pages |
+| `src/main.tsx` | modified | +15 | 0 | 6 new routes: `/login`, `/register`, `/verify-email`, `/forgot-password`, `/reset-password`, `/mfa` |
+| `mevrelbank/roadmap.md` | modified | +11 | −1 | Phase 2 auth items checked off |
+| `dist/` | rebuilt | — | — | New bundle |
+
+**Total net new source lines:** ~1,197
+
+### Route table after this session
+| Path | Component |
+|------|-----------|
+| `/login` | `LoginPage` |
+| `/register` | `RegisterPage` |
+| `/verify-email` | `VerifyEmailPage` |
+| `/forgot-password` | `ForgotPasswordPage` |
+| `/reset-password` | `ResetPasswordPage` |
+| `/mfa` | `MFAPage` |
+
+### Outcome
+All Phase 2 UI pages scaffolded. These are fully functional frontend forms with proper UX states but no backend integration yet — that remains Phase 2 backend work (JWT, email service, TOTP provisioning).
+
+---
+
+<a id="s-08"></a>
+## S-08 · 2026-07-10 · Phase 1 close-out: waitlist page, SEO baseline, roadmap sync
+
+**Branch:** `copilot/fix-s8-phase1-closeout` (current session branch)  
+**PR:** (current)  
+**Trigger:** User request to close out Phase 1: update roadmap, replace mailto CTAs with a real waitlist page, and add per-route SEO metadata.
+
+### Objective
+Three deliverables:
+1. Sync `mevrelbank/roadmap.md` — mark all 7 Phase 1 inner pages as complete; add remaining Phase 1 work items.
+2. Waitlist / lead capture — replace all "Open Account" `mailto:` CTAs with a proper `/waitlist` route that collects name, email, and account type before opening the email client.
+3. SEO baseline — add a dependency-free `PageMeta` component that sets `document.title` and `<meta name="description">` per route on every page.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `mevrelbank/roadmap.md` | modified | 3 | 7 | 7 inner pages checked off; 3 remaining Phase 1 items added |
+| `src/app/website/components/PageMeta.tsx` | added | 22 | 0 | `useEffect`-based title + meta description setter; zero new dependencies |
+| `src/app/website/pages/WaitlistPage.tsx` | added | ~170 | 0 | Personal/business radio selector, mailto form, submitted state, what-happens-next aside |
+| `src/app/website/pages/index.tsx` | modified | 1 | 0 | Export `WaitlistPage` |
+| `src/main.tsx` | modified | 2 | 1 | Import + `/waitlist` route added |
+| `src/app/website/components/Hero.tsx` | modified | 1 | 1 | "Open a Free Account" → `/waitlist` |
+| `src/app/website/components/CTA.tsx` | modified | 2 | 2 | "Open a Free Account" → `/waitlist`; "Explore Business Accounts" `#business` → `/products#business` |
+| `src/app/website/components/Navbar.tsx` | modified | 2 | 2 | "Open Account" → `/waitlist` (desktop + mobile) |
+| `src/app/website/pages/AboutPage.tsx` | modified | 7 | 1 | Import + `<PageMeta>` added; fragment wrapper |
+| `src/app/website/pages/BlogPage.tsx` | modified | 7 | 1 | Import + `<PageMeta>` added; fragment wrapper |
+| `src/app/website/pages/CareersPage.tsx` | modified | 7 | 1 | Import + `<PageMeta>` added; fragment wrapper |
+| `src/app/website/pages/ContactPage.tsx` | modified | 7 | 1 | Import + `<PageMeta>` added; fragment wrapper |
+| `src/app/website/pages/FaqsPage.tsx` | modified | 7 | 1 | Import + `<PageMeta>` added; fragment wrapper |
+| `src/app/website/pages/HomePage.tsx` | modified | 5 | 0 | Import + `<PageMeta>` added inline |
+| `src/app/website/pages/ProductsPage.tsx` | modified | 8 | 2 | Import + `<PageMeta>` added; primaryCta → `/waitlist`; fragment wrapper |
+| `src/app/website/pages/SecurityPage.tsx` | modified | 7 | 1 | Import + `<PageMeta>` added; fragment wrapper |
+| `dist/` | rebuilt | — | — | New bundle after source changes |
+
+**Total net new source lines:** ~+248
+
+### Per-route SEO data
+| Route | `<title>` | `<meta description>` (≤160 chars) |
+|-------|-----------|-----------------------------------|
+| `/` | MevrelBank — Smarter Banking for a Modern Life | MevrelBank brings clarity, speed, and intelligence to your finances. A modern digital banking platform built for the way you live. |
+| `/about` | About MevrelBank — Mission, Vision & Values | Learn about MevrelBank, the digital banking platform built around trust, speed, and clarity. Discover our mission, values, and team focus areas. |
+| `/products` | Products & Services — MevrelBank | Explore MevrelBank's core banking products: personal accounts, savings, business banking, payments, cards, and international transfers. |
+| `/contact` | Contact MevrelBank — Get in Touch | Reach out to the MevrelBank team for product enquiries, support, partnerships, or press contacts. Multiple contact channels available. |
+| `/faqs` | FAQs — MevrelBank | Answers to the most common questions about MevrelBank: account types, security, business banking, and how to register interest. |
+| `/security-center` | Security Center — MevrelBank | MevrelBank is designed with a security-first posture. Learn about our security practices and responsible disclosure process. |
+| `/careers` | Careers at MevrelBank — Join the Team | Explore career opportunities at MevrelBank. We value high ownership, thoughtful craft, and low-ego execution. |
+| `/blog` | MevrelBank Blog — Updates & Perspectives | Stay up to date with product updates, company news, and security communications from the MevrelBank team. |
+| `/waitlist` | Join the Waitlist — MevrelBank | Register your interest in MevrelBank personal or business banking. Be among the first to know when accounts are available. |
+
+### CTA audit post-session
+All "Open Account" and "Open a Free Account" buttons across the site now point to `/waitlist`. The security reporting `mailto:security@mevrelbank.com` CTA in `SecurityPage` and the contact form `mailto:` in `ContactPage` are intentionally preserved — these are appropriate direct email channels, not conversion CTAs.
+
+### Outcome
+Phase 1 is now structurally complete: 9 routed pages, all with unique titles and meta descriptions, all primary conversion CTAs routing through a dedicated waitlist page. The roadmap reflects this. Next logical step is Phase 2 (Authentication) or continued Phase 1 polish (Blog content, legal pages).
+
+---
 
 ---
 

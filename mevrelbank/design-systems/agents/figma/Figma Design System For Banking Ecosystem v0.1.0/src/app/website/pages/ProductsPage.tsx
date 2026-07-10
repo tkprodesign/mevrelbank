@@ -1,3 +1,4 @@
+import { PageMeta } from "../components/PageMeta";
 import { PageSection, PageShell } from "../components/PageShell";
 
 const PRODUCTS = [
@@ -41,11 +42,16 @@ const PRODUCTS = [
 
 export default function ProductsPage() {
   return (
-    <PageShell
+    <>
+      <PageMeta
+        title="Products & Services — MevrelBank"
+        description="Explore MevrelBank's core banking products: personal accounts, savings, business banking, payments, cards, and international transfers."
+      />
+      <PageShell
       eyebrow="Products & Services"
       title="Core banking products designed for clarity, movement, and control."
       intro="MevrelBank is being structured around essential financial journeys first: accounts, saving, payments, cards, and the tools customers use most often."
-      primaryCta={{ label: "Open account interest", href: "mailto:hello@mevrelbank.com?subject=Open%20account%20interest" }}
+      primaryCta={{ label: "Join the waitlist", href: "/waitlist" }}
       secondaryCta={{ label: "Review security posture", href: "/security-center" }}
     >
       <PageSection
@@ -93,5 +99,6 @@ export default function ProductsPage() {
         </div>
       </PageSection>
     </PageShell>
+    </>
   );
 }

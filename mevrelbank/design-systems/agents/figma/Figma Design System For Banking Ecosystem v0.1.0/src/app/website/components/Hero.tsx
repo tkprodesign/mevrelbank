@@ -58,7 +58,7 @@ export function Hero() {
           </p>
 
           <div className="flex items-center gap-4 flex-wrap">
-            <Btn variant="secondary" size="lg" href="mailto:hello@mevrelbank.com?subject=Open%20account%20interest">
+            <Btn variant="secondary" size="lg" href="/waitlist">
               Open a Free Account
             </Btn>
             <a

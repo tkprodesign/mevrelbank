@@ -1,8 +1,14 @@
+import { PageMeta } from "../components/PageMeta";
 import { PageSection, PageShell } from "../components/PageShell";
 
 export default function BlogPage() {
   return (
-    <PageShell
+    <>
+      <PageMeta
+        title="MevrelBank Blog — Updates & Perspectives"
+        description="Stay up to date with product updates, company news, and security communications from the MevrelBank team."
+      />
+      <PageShell
       eyebrow="Blog & News"
       title="Updates, perspectives, and product thinking from MevrelBank."
       intro="The editorial layer is being prepared as part of the broader website experience. This page establishes the space for future launch notes, product updates, and company news."
@@ -39,5 +45,6 @@ export default function BlogPage() {
         </div>
       </PageSection>
     </PageShell>
+    </>
   );
 }

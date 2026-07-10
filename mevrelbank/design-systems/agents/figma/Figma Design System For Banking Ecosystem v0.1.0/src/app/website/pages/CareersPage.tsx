@@ -1,8 +1,14 @@
+import { PageMeta } from "../components/PageMeta";
 import { PageSection, PageShell } from "../components/PageShell";
 
 export default function CareersPage() {
   return (
-    <PageShell
+    <>
+      <PageMeta
+        title="Careers at MevrelBank — Join the Team"
+        description="Explore career opportunities at MevrelBank. We value high ownership, thoughtful craft, and low-ego execution. Send your profile to get started."
+      />
+      <PageShell
       eyebrow="Careers"
       title="Build calm, modern financial experiences with us."
       intro="As MevrelBank grows, we want to bring together people who care deeply about product quality, operational discipline, and purposeful execution."
@@ -53,5 +59,6 @@ export default function CareersPage() {
         </div>
       </PageSection>
     </PageShell>
+    </>
   );
 }

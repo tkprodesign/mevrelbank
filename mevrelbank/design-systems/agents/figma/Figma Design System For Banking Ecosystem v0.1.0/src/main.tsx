@@ -8,12 +8,20 @@ import {
   CareersPage,
   ContactPage,
   FaqsPage,
+  ForgotPasswordPage,
+  LoginPage,
+  MFAPage,
   ProductsPage,
+  RegisterPage,
+  ResetPasswordPage,
   SecurityPage,
+  VerifyEmailPage,
+  WaitlistPage,
 } from "./app/website/pages";
 import "./styles/index.css";
 
 const router = createBrowserRouter([
+  // Public website
   { path: "/", element: <HomePage /> },
   { path: "/about", element: <AboutPage /> },
   { path: "/products", element: <ProductsPage /> },
@@ -22,6 +30,15 @@ const router = createBrowserRouter([
   { path: "/security-center", element: <SecurityPage /> },
   { path: "/careers", element: <CareersPage /> },
   { path: "/blog", element: <BlogPage /> },
+  { path: "/waitlist", element: <WaitlistPage /> },
+  // Auth flows
+  { path: "/login", element: <LoginPage /> },
+  { path: "/register", element: <RegisterPage /> },
+  { path: "/verify-email", element: <VerifyEmailPage /> },
+  { path: "/forgot-password", element: <ForgotPasswordPage /> },
+  { path: "/reset-password", element: <ResetPasswordPage /> },
+  { path: "/mfa", element: <MFAPage /> },
+  // Design system demo
   { path: "/ds", element: <App /> },
   { path: "*", element: <HomePage /> },
 ]);
