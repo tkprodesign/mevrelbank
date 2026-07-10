@@ -104,3 +104,8 @@ node .github/scripts/dropbox-sync.js
 - Manual dispatch with options
 - Notifications (Slack / Discord / Email)
 - Multiple Dropbox destinations
+
+## Changelog
+
+### 2026-07-08 — Copilot Coding Agent — Initial implementation
+Full GitHub → Dropbox Smart Sync system built (S-01). Modular scripts under `.github/scripts/`. PR #1.

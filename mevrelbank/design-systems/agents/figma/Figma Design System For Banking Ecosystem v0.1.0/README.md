@@ -48,3 +48,22 @@
 
   `/waitlist` submits directly to `/api/waitlist` and shows inline success/error states in the existing UI.
   
+  ## Changelog
+
+  ### 2026-07-08 — Copilot Coding Agent — Initial website scaffold (S-03)
+  React Router v7 added; `/` → HomePage, `/ds` → design system demo; brand PNGs wired.
+
+  ### 2026-07-09 — Copilot Coding Agent — Phase 1 inner pages (S-05)
+  7 routed inner pages added (About, Products, Contact, FAQs, Security, Careers, Blog). Shared `PageShell` component.
+
+  ### 2026-07-09 — Copilot Coding Agent — Homepage sections + integrity pass (S-04, S-06)
+  `CoreSections.tsx` and `BusinessModel.tsx` added. Unverifiable regulatory claims removed. All nav links resolve.
+
+  ### 2026-07-10 — Copilot Coding Agent — Phase 1 close-out: waitlist + SEO (S-08)
+  `/waitlist` route added with `WaitlistPage.tsx` (mailto flow). `PageMeta` component adds per-route SEO.
+
+  ### 2026-07-10 — Copilot Coding Agent — Phase 2 auth pages (S-09)
+  `AuthShell` + 6 auth routes scaffolded: `/login`, `/register`, `/verify-email`, `/forgot-password`, `/reset-password`, `/mfa`.
+
+  ### 2026-07-10 — Copilot Coding Agent — Cloudflare D1 waitlist backend (S-10)
+  `wrangler.toml`, `migrations/0001_waitlist.sql`, and `functions/api/waitlist.ts` added. `/waitlist` now submits to `POST /api/waitlist` stored in D1.

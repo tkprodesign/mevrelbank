@@ -8,16 +8,91 @@
 
 ## Session Index
 
-| Session | Date (UTC) | PR | Title |
-|---------|------------|----|-------|
-| [S-08](#s-08) | 2026-07-10 | — | Phase 1 close-out: waitlist, SEO, roadmap |
-| [S-07](#s-07) | 2026-07-10 | — | Create this session log |
-| [S-06](#s-06) | 2026-07-09 | [#6](https://github.com/codywoods8899/mevrelbank/pull/6) | Business model + next-steps homepage section |
-| [S-05](#s-05) | 2026-07-09 | [#5](https://github.com/codywoods8899/mevrelbank/pull/5) | Phase 1 inner pages (7 routes) |
-| [S-04](#s-04) | 2026-07-09 | [#4](https://github.com/codywoods8899/mevrelbank/pull/4) | Homepage integrity pass |
-| [S-03](#s-03) | 2026-07-08 | [#3](https://github.com/codywoods8899/mevrelbank/pull/3) | React Router + dist build |
-| [S-02](#s-02) | 2026-07-08 | [#2](https://github.com/codywoods8899/mevrelbank/pull/2) | Fix package-lock.json |
-| [S-01](#s-01) | 2026-07-08 | [#1](https://github.com/codywoods8899/mevrelbank/pull/1) | Dropbox sync system |
+| Session | Date (UTC) | PR | Title | Agent |
+|---------|------------|----|-------|-------|
+| [S-10](#s-10) | 2026-07-10T01:52Z | — | Cloudflare D1 waitlist backend | Copilot Coding Agent |
+| [S-09](#s-09) | 2026-07-10T01:40Z | — | Phase 2 auth pages scaffold | Copilot Coding Agent |
+| [S-08](#s-08) | 2026-07-10T01:24Z | — | Phase 1 close-out: waitlist, SEO, roadmap | Copilot Coding Agent |
+| [S-07](#s-07) | 2026-07-10T00:46Z | — | Create this session log | Copilot Coding Agent |
+| [S-06](#s-06) | 2026-07-09T05:05Z | [#6](https://github.com/codywoods8899/mevrelbank/pull/6) | Business model + next-steps homepage section | Copilot Coding Agent |
+| [S-05](#s-05) | 2026-07-09T04:50Z | [#5](https://github.com/codywoods8899/mevrelbank/pull/5) | Phase 1 inner pages (7 routes) | Copilot Coding Agent |
+| [S-04](#s-04) | 2026-07-09T03:45Z | [#4](https://github.com/codywoods8899/mevrelbank/pull/4) | Homepage integrity pass | Copilot Coding Agent |
+| [S-03](#s-03) | 2026-07-08T19:42Z | [#3](https://github.com/codywoods8899/mevrelbank/pull/3) | React Router + dist build | Copilot Coding Agent |
+| [S-02](#s-02) | 2026-07-08T19:35Z | [#2](https://github.com/codywoods8899/mevrelbank/pull/2) | Fix package-lock.json | Copilot Coding Agent |
+| [S-01](#s-01) | 2026-07-08T19:19Z | [#1](https://github.com/codywoods8899/mevrelbank/pull/1) | Dropbox sync system | Copilot Coding Agent |
+
+---
+
+<a id="s-10"></a>
+## S-10 · 2026-07-10T01:52Z · Cloudflare D1 waitlist backend
+
+**Agent:** Copilot Coding Agent  
+**Branch:** `copilot/fix-1-let-us-use-cloudflare-d1` (current session branch)  
+**PR:** (current)  
+**Trigger:** User request to use Cloudflare D1 as the site database, starting with the waitlist form.
+
+### Objective
+Replace the `mailto:` waitlist submission with a real database-backed endpoint using Cloudflare D1 and Cloudflare Pages Functions. No separate Workers project — Pages Functions handle the API layer natively via a `functions/` directory.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `wrangler.toml` | added | 8 | 0 | Cloudflare Pages project name + D1 binding (`DB` → `mevrelbank-db`) |
+| `migrations/0001_waitlist.sql` | added | 12 | 0 | Creates `waitlist_submissions` table + `created_at` index |
+| `functions/api/waitlist.ts` | added | 104 | 0 | `POST /api/waitlist` — validates input, inserts to D1; CORS + `OPTIONS` handler |
+| `src/app/website/pages/WaitlistPage.tsx` | modified | +24 | −15 | Replaced `mailto:` logic with `fetch("/api/waitlist")`; added loading + error states |
+| `README.md` | modified | +40 | 0 | Added Cloudflare D1 setup, migration, and binding instructions |
+
+### API contract
+- `POST /api/waitlist` accepts JSON `{ name, email, accountType, message? }`
+- Validates all required fields server-side; length-limits name (120), email (254), message (2000)
+- Inserts into `waitlist_submissions` (D1 SQLite)
+- CORS allowed for: `mevrelbank.com`, `www.mevrelbank.com`, `localhost:5173`, and any `*.pages.dev` preview URL
+
+### Outcome
+Waitlist submissions are now stored in Cloudflare D1. The `mailto:` fallback has been removed. Inline error and loading states added to the form. The `wrangler.toml` `database_id` placeholder must be replaced with the real ID after running `wrangler d1 create mevrelbank-db`.
+
+---
+
+<a id="s-09"></a>
+## S-09 · 2026-07-10T01:40Z · Phase 2 auth pages scaffold
+
+**Agent:** Copilot Coding Agent  
+**Branch:** (part of Phase 2 auth work, committed directly to current branch at `b112c5a`)  
+**Trigger:** User request to scaffold all Phase 2 authentication pages.
+
+### Objective
+Build all six authentication page routes using a shared `AuthShell` layout component — a centered card layout without the full Navbar/Footer, suitable for login/register flows.
+
+### Files Changed
+| File | Status | +Lines | −Lines | Notes |
+|------|--------|--------|--------|-------|
+| `src/app/website/components/AuthShell.tsx` | added | 116 | 0 | Shared auth layout: logo bar, centered card, minimal footer |
+| `src/app/website/pages/LoginPage.tsx` | added | 119 | 0 | Email + password, show/hide toggle, error state, forgot/register links |
+| `src/app/website/pages/RegisterPage.tsx` | added | 274 | 0 | Name, email, password strength, account type, T&C acceptance |
+| `src/app/website/pages/VerifyEmailPage.tsx` | added | 206 | 0 | 6-digit OTP input grid, paste support, resend countdown |
+| `src/app/website/pages/ForgotPasswordPage.tsx` | added | 111 | 0 | Email input, success/inbox state |
+| `src/app/website/pages/ResetPasswordPage.tsx` | added | 160 | 0 | New password form, strength indicator, success state |
+| `src/app/website/pages/MFAPage.tsx` | added | 205 | 0 | TOTP input, SMS fallback toggle, resend countdown |
+| `src/app/website/pages/index.tsx` | modified | 7 | 0 | Barrel export updated with all auth pages |
+| `src/main.tsx` | modified | +15 | 0 | 6 new routes: `/login`, `/register`, `/verify-email`, `/forgot-password`, `/reset-password`, `/mfa` |
+| `mevrelbank/roadmap.md` | modified | +11 | −1 | Phase 2 auth items checked off |
+| `dist/` | rebuilt | — | — | New bundle |
+
+**Total net new source lines:** ~1,197
+
+### Route table after this session
+| Path | Component |
+|------|-----------|
+| `/login` | `LoginPage` |
+| `/register` | `RegisterPage` |
+| `/verify-email` | `VerifyEmailPage` |
+| `/forgot-password` | `ForgotPasswordPage` |
+| `/reset-password` | `ResetPasswordPage` |
+| `/mfa` | `MFAPage` |
+
+### Outcome
+All Phase 2 UI pages scaffolded. These are fully functional frontend forms with proper UX states but no backend integration yet — that remains Phase 2 backend work (JWT, email service, TOTP provisioning).
 
 ---
 

@@ -46,18 +46,22 @@ Only **one** active session exists at any time. A new `/authorize` call invalida
 
 ## 2. MevrelBank (`mevrelbank/`)
 
-A digital banking platform currently in **Phase 0 — Foundation** (brand identity & design system planning). No runnable code yet.
+A digital banking platform currently in **Phase 2 — Authentication** (frontend auth pages complete; backend integration pending).
 
 ### Status
 - ✅ Brand architecture & logo system complete
-- ⏳ Design system / color system / typography in progress
-- ⬜ Public website, auth, customer dashboard — planned
+- ✅ Design system / color system / typography complete
+- ✅ Public website complete (9 routed pages, SEO, live at mevrelbank.com)
+- ✅ Auth page UI complete (login, register, verify-email, forgot/reset password, MFA)
+- ✅ Waitlist form with Cloudflare D1 backend (via Pages Functions)
+- ⏳ Phase 2 backend: JWT auth, email service, TOTP provisioning — planned
+- ⬜ Phase 3+: customer dashboard, payments, cards — planned
 
-### Planned Hosting
-- Frontend: Cloudflare Pages
-- Backend: Railway
-- Database: Neon PostgreSQL
-- Storage: Cloudflare R2
+### Hosting
+- Frontend: Cloudflare Pages (live at mevrelbank.com)
+- Backend: Railway (planned — not yet provisioned)
+- Database: Cloudflare D1 (active — waitlist_submissions)
+- Storage: Cloudflare R2 (planned)
 
 See `mevrelbank/roadmap.md` for the full phased plan.
 

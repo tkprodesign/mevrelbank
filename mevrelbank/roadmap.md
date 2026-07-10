@@ -193,7 +193,8 @@ Backend
 - Railway
 
 Database
-- Neon PostgreSQL
+- Cloudflare D1 (SQLite at the edge via Pages Functions — active, `waitlist_submissions`)
+- Neon PostgreSQL (planned for Phase 2+ backend — auth, customer data)
 
 Storage
 - Cloudflare R2
